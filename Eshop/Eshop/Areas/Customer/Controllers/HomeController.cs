@@ -9,6 +9,7 @@ using Eshop.Models;
 
 namespace Eshop.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
