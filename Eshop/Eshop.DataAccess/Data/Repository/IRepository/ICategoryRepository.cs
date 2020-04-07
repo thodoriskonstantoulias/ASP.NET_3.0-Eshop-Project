@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Eshop.DataAccess.Data.Repository.IRepository
 {
-    interface ICategoryRepository : IRepository<Category>
+    public interface ICategoryRepository : IRepository<Category>
     {
         IEnumerable<SelectListItem> GetCategoryForDropDown();
         void Update(Category category);
