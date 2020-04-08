@@ -37,3 +37,31 @@ function loadDataTable() {
 		"width": "100%"
 	})
 }
+
+function Delete(url) {
+	swal({
+		title: "Are you sure you want to delete",
+		text: "You will permanently delete this",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "Yes delete it",
+		closeOnConfirm: true
+	}, function () {
+			$.ajax({
+				url: url,
+				type: "DELETE",
+				success: function (data) {
+					if (data.success) {
+						toastr.success(data.message);
+						dataTable.ajax.reload();
+					}
+					else {
+						toastr.error(data.message);
+					}
+				}
+			});
+	});
+}
+
+
