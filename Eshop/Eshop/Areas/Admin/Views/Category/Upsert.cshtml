@@ -40,6 +40,20 @@
 					<span asp-validation-for="DisplayOrder" class="text-danger"></span>
 				</div>
 			</div>
+			<div class="row form-group">
+				<div class="col-8 offset-4">
+					@if (Model.Id != 0)
+					{
+						//Edit button
+						<partial name="_EditAndBackButton" model="Model.Id" />
+					}
+					else
+					{
+						//Create button
+						<partial name="_CreateAndBackButton"/>
+					}
+				</div>
+			</div>
 		</div>
 
 	</div>
