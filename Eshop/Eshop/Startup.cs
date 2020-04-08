@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Eshop.DataAccess.Data;
 using Eshop.DataAccess.Data.Repository.IRepository;
 using Eshop.DataAccess.Data.Repository;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Eshop.Utility;
 
 namespace Eshop
 {
@@ -33,10 +35,18 @@ namespace Eshop
 
             //Add dependency injection
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IEmailSender, EMailSender>();
 
             services.AddControllersWithViews().AddNewtonsoftJson().AddRazorRuntimeCompilation();
 
             services.AddRazorPages();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
