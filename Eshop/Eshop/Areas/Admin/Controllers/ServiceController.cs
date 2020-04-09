@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Eshop.DataAccess.Data.Repository.IRepository;
+using Eshop.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,22 @@ namespace Eshop.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult Upsert(int? id)
+        {
+            ServiceVM vm = new ServiceVM()
+            {
+                Service = new Models.Service(),
+                CategoryList = _unitOfWork.Category.GetCategoryForDropDown(),
+                FrequencyList = _unitOfWork.Frequency.GetFrequencyForDropDown()
+            };
 
+            if( id != null) //Edit
+            {
+                vm.Service = _unitOfWork.Service.Get(id.GetValueOrDefault());
+            }
+
+            return View(vm);
+        }
 
         #region API calls
         [HttpGet]
