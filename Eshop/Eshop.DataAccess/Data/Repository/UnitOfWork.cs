@@ -12,9 +12,12 @@ namespace Eshop.DataAccess.Data.Repository
         {
             _context = context;
             Category = new CategoryRepository(_context);
+            Frequency = new FrequencyRepository(_context);
         }
 
         public ICategoryRepository Category { get; private set; }
+
+        public IFrequencyRepository Frequency { get; private set; }
 
         public void Dispose()
         {
