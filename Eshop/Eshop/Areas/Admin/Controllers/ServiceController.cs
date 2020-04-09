@@ -31,8 +31,7 @@ namespace Eshop.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAllServices()
         {
-            //Check to see if it wants capitals
-            return Json(new { data = _unitOfWork.Service.GetAll(includeProperties:"category,frequency") });
+            return Json(new { data = _unitOfWork.Service.GetAll(includeProperties:"Category,Frequency") });
         }
         #endregion
     }
