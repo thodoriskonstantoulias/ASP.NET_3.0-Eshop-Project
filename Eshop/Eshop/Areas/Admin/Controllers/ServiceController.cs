@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Eshop.DataAccess.Data.Repository.IRepository;
@@ -41,6 +42,33 @@ namespace Eshop.Areas.Admin.Controllers
             }
 
             return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(ServiceVM serviceVm)
+        {
+            if (ModelState.IsValid)
+            {
+                string webrootPath = _hostEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+
+                if (serviceVm.Service.Id == 0) //Insert
+                {
+                    //Steps to save image to server
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(webrootPath, @"images\servives");
+                    var extension = Path.GetExtension(files[0].FileName);
+
+                    using(var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStreams);
+                    }
+                    serviceVm.Service.ImageUrl = @"\images\services\" + fileName + extension;
+
+                    _unitOfWork.Service.Add(serviceVm.Service);  
+                }
+            }
         }
 
         #region API calls
