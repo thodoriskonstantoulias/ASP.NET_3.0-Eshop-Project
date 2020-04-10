@@ -117,6 +117,28 @@ namespace Eshop.Areas.Admin.Controllers
         {
             return Json(new { data = _unitOfWork.Service.GetAll(includeProperties:"Category,Frequency") });
         }
+
+        [HttpDelete]
+        public IActionResult DeleteService(int id)
+        {
+            var objToDelete = _unitOfWork.Service.Get(id);
+            string webrootPath = _hostEnvironment.WebRootPath;
+            var imagePath = Path.Combine(webrootPath, objToDelete.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+
+            if (objToDelete == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            _unitOfWork.Service.Remove(objToDelete);
+            _unitOfWork.Save(); 
+
+            return Json(new { success = true, message = "Service deleted" });
+        }
         #endregion
     }
 }
