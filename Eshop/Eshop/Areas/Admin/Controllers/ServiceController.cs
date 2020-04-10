@@ -57,7 +57,7 @@ namespace Eshop.Areas.Admin.Controllers
                 {
                     //Steps to save image to server
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webrootPath, @"images\servives");
+                    var uploads = Path.Combine(webrootPath, @"images\services");
                     var extension = Path.GetExtension(files[0].FileName);
 
                     using(var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
@@ -68,6 +68,46 @@ namespace Eshop.Areas.Admin.Controllers
 
                     _unitOfWork.Service.Add(serviceVm.Service);  
                 }
+                else // Update
+                {
+                    var serviceFromDb = _unitOfWork.Service.Get(serviceVm.Service.Id);
+
+                    //Check image
+                    if (files.Count > 0)
+                    {
+                        string fileName = Guid.NewGuid().ToString();
+                        var uploads = Path.Combine(webrootPath, @"images\servives");
+                        var extension_new = Path.GetExtension(files[0].FileName);
+
+                        var imagePath = Path.Combine(webrootPath, serviceFromDb.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                        using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension_new), FileMode.Create))
+                        {
+                            files[0].CopyTo(fileStreams);
+                        }
+                        serviceVm.Service.ImageUrl = @"\images\services\" + fileName + extension_new;
+                    }
+                    else
+                    {
+                        serviceVm.Service.ImageUrl = serviceFromDb.ImageUrl;
+                    }
+
+                    _unitOfWork.Service.Update(serviceVm.Service);
+                }
+
+                _unitOfWork.Save();
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                //Repopulate the dropdowns
+                serviceVm.CategoryList = _unitOfWork.Category.GetCategoryForDropDown();
+                serviceVm.FrequencyList = _unitOfWork.Frequency.GetFrequencyForDropDown();
+                return View(serviceVm);
             }
         }
 
