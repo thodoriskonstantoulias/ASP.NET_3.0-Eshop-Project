@@ -1,7 +1,12 @@
 ﻿@model Service
+@using Eshop.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using Eshop.Extensions
+
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container backgroundWhite">
@@ -27,7 +32,7 @@
 						</div>
 					</div>
 					<div class="col-12 col-lg-4 text-center">
-						<img src="@Model.ImageUrl" width="100%" class="rounded"/>
+						<img src="@Model.ImageUrl" width="100%" class="rounded" />
 					</div>
 				</div>
 			</div>
@@ -38,7 +43,29 @@
 					<a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back To List</a>
 				</div>
 				<div class="col-12 col-md-6 pb-1">
-					<a asp-action="AddToCart" asp-route-serviceId="@Model.Id" class="btn btn-primary btn-square form-control btn-lg" style="height:50px;">Add To Cart</a>
+
+					@{
+						var addToCartEnabled = true;
+						@if (HttpContextAccessor.HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart) != null)
+						{
+							var sessionList = HttpContextAccessor.HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart);
+							if (sessionList.Contains(Model.Id))
+							{
+								addToCartEnabled = false;
+							}
+						}
+					}
+
+					@if (addToCartEnabled)
+					{
+						<a asp-action="AddToCart" asp-route-serviceId="@Model.Id" class="btn btn-primary btn-square form-control btn-lg" style="height:50px;">Add To Cart</a>
+					}
+					else
+					{
+						<button class="btn btn-primary btn-square form-control btn-lg" style="height:50px;" disabled>Item In Cart</button>
+					}
+
+
 				</div>
 			</div>
 		</div>
