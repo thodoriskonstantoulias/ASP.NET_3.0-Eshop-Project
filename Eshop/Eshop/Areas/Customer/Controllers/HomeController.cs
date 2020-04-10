@@ -32,9 +32,11 @@ namespace Eshop.Controllers
             return View(homeVm);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Details(int id)
         {
-            return View();
+            var service = _unitOfWork.Service.GetFirstOrDefault(includeProperties:"Category,Frequency", filter:c=> c.Id == id);
+
+            return View(service); 
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
