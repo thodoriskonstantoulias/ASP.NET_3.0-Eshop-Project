@@ -46,7 +46,7 @@ namespace Eshop.Controllers
         {
             List<int> sessionList = new List<int>(); 
 
-            //Check if there is a session
+            //Check to see if there is a session
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(StatDetails.SessionCart)))
             {
                 sessionList.Add(serviceId);

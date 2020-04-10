@@ -10,6 +10,7 @@ using Eshop.DataAccess.Data.Repository.IRepository;
 using Eshop.DataAccess.Data.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Eshop.Utility;
+using System;
 
 namespace Eshop
 {
@@ -36,6 +37,14 @@ namespace Eshop
             //Add dependency injection
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEmailSender, EMailSender>();
+
+            //Add session scope
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddControllersWithViews().AddNewtonsoftJson().AddRazorRuntimeCompilation();
 
@@ -65,6 +74,9 @@ namespace Eshop
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            //Session
+            app.UseSession();
 
             app.UseRouting();
 
