@@ -42,5 +42,15 @@ namespace Eshop.Areas.Customer.Controllers
 
             return View(cartVm);
         }
+
+        public IActionResult Remove(int serviceId)
+        {
+            List<int> sessionList = new List<int>();
+            sessionList = HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart);
+            sessionList.Remove(serviceId);
+            HttpContext.Session.SetObject(StatDetails.SessionCart, sessionList);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
