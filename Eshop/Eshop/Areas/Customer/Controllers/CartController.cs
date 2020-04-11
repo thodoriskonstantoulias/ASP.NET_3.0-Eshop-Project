@@ -68,5 +68,54 @@ namespace Eshop.Areas.Customer.Controllers
 
             return View(cartVm);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Summary")]
+        public IActionResult SummaryPost(CartVM cartVM)
+        {
+            //Get the services from the session
+            if (HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart) != null)
+            {
+                List<int> sessionList = new List<int>();
+                sessionList = HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart);
+                foreach (int serviceId in sessionList)
+                {
+                    cartVm.ServiceList.Add(_unitOfWork.Service.GetFirstOrDefault(s => s.Id == serviceId, "Frequency,Category"));
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                //Add to orderheader
+                cartVM.OrderHeader.OrderDate = DateTime.Now;
+                cartVM.OrderHeader.Status = StatDetails.StatusSumbmitted;
+                cartVM.OrderHeader.ServiceCount = cartVM.ServiceList.Count;
+
+                _unitOfWork.OrderHeader.Add(cartVM.OrderHeader);
+                _unitOfWork.Save();
+
+                //Add to orderdetails - reference table
+                foreach (var item in cartVM.ServiceList)
+                {
+                    OrderDetails orderDetails = new OrderDetails()
+                    {
+                         ServiceId = item.Id,
+                         OrderHeaderId = cartVM.OrderHeader.Id,
+                         ServiceName = item.Name,
+                         Price = item.Price
+                    };
+
+                    _unitOfWork.OrderDetails.Add(orderDetails);
+                    _unitOfWork.Save();
+                }
+
+                //After insertion we must empty the session
+                HttpContext.Session.SetObject(StatDetails.SessionCart, new List<int>());
+                return RedirectToAction("OrderConfirmation", "Cart", new { id = cartVM.OrderHeader.Id });
+            }
+
+            return View(cartVm);
+        }
     }
 }
