@@ -117,5 +117,10 @@ namespace Eshop.Areas.Customer.Controllers
 
             return View(cartVm);
         }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);
+        }
     }
 }
