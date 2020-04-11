@@ -52,5 +52,21 @@ namespace Eshop.Areas.Customer.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Summary()
+        {
+            //Get the services from the session
+            if (HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart) != null)
+            {
+                List<int> sessionList = new List<int>();
+                sessionList = HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart);
+                foreach (int serviceId in sessionList)
+                {
+                    cartVm.ServiceList.Add(_unitOfWork.Service.GetFirstOrDefault(s => s.Id == serviceId, "Frequency,Category"));
+                }
+            }
+
+            return View(cartVm);
+        }
     }
 }
