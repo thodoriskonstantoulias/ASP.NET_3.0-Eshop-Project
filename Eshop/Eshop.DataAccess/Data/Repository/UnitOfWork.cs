@@ -14,6 +14,8 @@ namespace Eshop.DataAccess.Data.Repository
             Category = new CategoryRepository(_context);
             Frequency = new FrequencyRepository(_context);
             Service = new ServiceRepository(_context);
+            OrderHeader = new OrderHeaderRepository(_context);
+            OrderDetails = new OrderDetailsRepository(_context);
         }
 
         public ICategoryRepository Category { get; private set; }
@@ -21,6 +23,8 @@ namespace Eshop.DataAccess.Data.Repository
         public IFrequencyRepository Frequency { get; private set; }
 
         public IServiceRepository Service { get; private set; }
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+        public IOrderDetailsRepository OrderDetails { get; private set; }
 
         public void Dispose()
         {
