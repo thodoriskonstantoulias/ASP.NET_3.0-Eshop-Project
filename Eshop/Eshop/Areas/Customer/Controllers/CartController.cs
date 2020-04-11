@@ -79,9 +79,11 @@ namespace Eshop.Areas.Customer.Controllers
             {
                 List<int> sessionList = new List<int>();
                 sessionList = HttpContext.Session.GetObject<List<int>>(StatDetails.SessionCart);
+
+                cartVM.ServiceList = new List<Service>();
                 foreach (int serviceId in sessionList)
                 {
-                    cartVm.ServiceList.Add(_unitOfWork.Service.GetFirstOrDefault(s => s.Id == serviceId, "Frequency,Category"));
+                    cartVM.ServiceList.Add(_unitOfWork.Service.GetFirstOrDefault(s => s.Id == serviceId, "Frequency,Category"));
                 }
             }
 
@@ -106,9 +108,9 @@ namespace Eshop.Areas.Customer.Controllers
                          Price = item.Price
                     };
 
-                    _unitOfWork.OrderDetails.Add(orderDetails);
-                    _unitOfWork.Save();
+                    _unitOfWork.OrderDetails.Add(orderDetails);                  
                 }
+                _unitOfWork.Save();
 
                 //After insertion we must empty the session
                 HttpContext.Session.SetObject(StatDetails.SessionCart, new List<int>());
