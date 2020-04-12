@@ -11,6 +11,7 @@ namespace Eshop.DataAccess.Data.Repository.IRepository
         IServiceRepository Service { get; }
         IOrderHeaderRepository OrderHeader { get; }
         IOrderDetailsRepository OrderDetails { get; }
+        IUserRepository User { get; }
         void Save();
     }
 }
