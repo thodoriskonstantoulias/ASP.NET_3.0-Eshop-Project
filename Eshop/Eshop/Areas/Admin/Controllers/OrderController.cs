@@ -34,6 +34,32 @@ namespace Eshop.Areas.Admin.Controllers
 
             return View(orderVM);
         }
+        public IActionResult Approve(int id)
+        {
+            var orderHeader = _unitOfWork.OrderHeader.Get(id);
+            if (orderHeader == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.OrderHeader.ChangeOrderStatus(id, StatDetails.StatusApproved);
+
+            return View(nameof(Index));
+        }
+
+        public IActionResult Reject(int id)
+        {
+            var orderHeader = _unitOfWork.OrderHeader.Get(id);
+            if (orderHeader == null)
+            {
+                return NotFound();
+            }
+
+            _unitOfWork.OrderHeader.ChangeOrderStatus(id, StatDetails.StatusRejected);
+
+            return View(nameof(Index));
+        }
+
 
 
         #region API Calls

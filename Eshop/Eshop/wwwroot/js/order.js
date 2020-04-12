@@ -5,11 +5,11 @@ $(document).ready(function () {
 	if (url.includes("approved")) {
 		loadDataTable("GetAllApprovedOrders");
 	}
-	else if (url.includes("all")) {
-		loadDataTable("GetAllOrders");
-	}
-	else {
+	else if (url.includes("pending")) {
 		loadDataTable("GetAllPendingOrders");
+	} 
+	else {
+		loadDataTable("GetAllOrders");
 	}
 	
 });
