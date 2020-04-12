@@ -2,6 +2,7 @@
 using Eshop.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Eshop.DataAccess.Data.Repository
@@ -12,6 +13,14 @@ namespace Eshop.DataAccess.Data.Repository
         public OrderHeaderRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public void ChangeOrderStatus(int orderHeaderId, string status)
+        {
+            var orderHeader = _context.OrderHeaders.FirstOrDefault(o => o.Id == orderHeaderId);
+            orderHeader.Status = status;
+
+            _context.SaveChanges();
         }
     }
 }
