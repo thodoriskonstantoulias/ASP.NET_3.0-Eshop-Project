@@ -91,7 +91,7 @@ namespace Eshop.Areas.Customer.Controllers
             {
                 //Add to orderheader
                 cartVM.OrderHeader.OrderDate = DateTime.Now;
-                cartVM.OrderHeader.Status = StatDetails.StatusSumbmitted;
+                cartVM.OrderHeader.Status = StatDetails.StatusSubmitted;
                 cartVM.OrderHeader.ServiceCount = cartVM.ServiceList.Count;
 
                 _unitOfWork.OrderHeader.Add(cartVM.OrderHeader);
