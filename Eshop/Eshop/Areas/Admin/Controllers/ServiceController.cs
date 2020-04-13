@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Eshop.DataAccess.Data.Repository.IRepository;
 using Eshop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class ServiceController : Controller
     {

@@ -4,10 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Eshop.DataAccess.Data.Repository.IRepository;
+using Eshop.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.Areas.Admin.Controllers
 {
+    [Authorize(Roles = StatDetails.Admin)]
     [Area("Admin")]
     public class UserController : Controller
     {

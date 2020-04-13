@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Eshop.DataAccess.Data.Repository.IRepository;
 using Eshop.Models.ViewModels;
 using Eshop.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eshop.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class OrderController : Controller
     {
