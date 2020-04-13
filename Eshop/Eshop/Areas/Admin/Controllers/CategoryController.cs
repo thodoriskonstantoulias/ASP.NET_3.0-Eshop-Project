@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Eshop.DataAccess.Data.Repository;
 using Eshop.DataAccess.Data.Repository.IRepository;
 using Eshop.Models;
+using Eshop.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -72,7 +73,10 @@ namespace Eshop.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAllCategories()
         {
-            return Json(new { data = _unitOfWork.Category.GetAll() });
+            //return Json(new { data = _unitOfWork.Category.GetAll() });
+
+            //2nd way using stored procedures 
+            return Json(new { data = _unitOfWork.SP_Call.ReturnList<Category>(StatDetails.usp_GetAllCategories) });
         }
 
         [HttpDelete]

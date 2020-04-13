@@ -17,6 +17,7 @@ namespace Eshop.DataAccess.Data.Repository
             OrderHeader = new OrderHeaderRepository(_context);
             OrderDetails = new OrderDetailsRepository(_context);
             User = new UserRepository(_context);
+            SP_Call = new SP_Call(_context);
         }
 
         public ICategoryRepository Category { get; private set; }
@@ -28,6 +29,8 @@ namespace Eshop.DataAccess.Data.Repository
         public IOrderDetailsRepository OrderDetails { get; private set; }
 
         public IUserRepository User { get; private set; }
+
+        public ISP_Call SP_Call { get; private set; }
 
         public void Dispose()
         {
