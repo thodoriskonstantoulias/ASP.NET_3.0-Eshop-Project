@@ -13,5 +13,7 @@ namespace Eshop.Utility
 
         public const string Admin = "Admin";
         public const string Manager = "Manager";
+
+        public const string usp_GetAllCategories = "usp_GetAllCategories";
     }
 }
