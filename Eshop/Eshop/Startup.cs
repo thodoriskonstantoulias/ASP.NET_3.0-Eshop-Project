@@ -11,6 +11,7 @@ using Eshop.DataAccess.Data.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Eshop.Utility;
 using System;
+using Eshop.DataAccess.Data.Intitializer;
 
 namespace Eshop
 {
@@ -37,6 +38,7 @@ namespace Eshop
             //Add dependency injection
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEmailSender, EMailSender>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
 
             //Add session scope
             services.AddSession(options =>
@@ -59,7 +61,7 @@ namespace Eshop
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -79,6 +81,8 @@ namespace Eshop
             app.UseSession();
 
             app.UseRouting();
+
+            dbInitializer.Initialize();
 
             app.UseAuthentication();
             app.UseAuthorization();

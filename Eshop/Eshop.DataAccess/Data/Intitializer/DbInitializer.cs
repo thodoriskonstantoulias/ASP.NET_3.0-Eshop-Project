@@ -1,4 +1,5 @@
-﻿using Eshop.Utility;
+﻿using Eshop.Models;
+using Eshop.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Eshop.DataAccess.Data.Intitializer
 {
-    class DbInitializer : IDbInitializer
+    public class DbInitializer : IDbInitializer
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -41,14 +42,14 @@ namespace Eshop.DataAccess.Data.Intitializer
             _roleManager.CreateAsync(new IdentityRole(StatDetails.Admin)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(StatDetails.Manager)).GetAwaiter().GetResult();
 
-            _userManager.CreateAsync(new IdentityUser
+            _userManager.CreateAsync(new ApplicationUser
             {
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
                 EmailConfirmed = true
             }, "Admin123!").GetAwaiter().GetResult();
 
-            IdentityUser user = _context.Users.Where(u => u.Email == "admin@gmail.com").FirstOrDefault();
+            ApplicationUser user = _context.ApplicationUser.Where(u => u.Email == "admin@gmail.com").FirstOrDefault();
             _userManager.AddToRoleAsync(user, StatDetails.Admin).GetAwaiter().GetResult();
         }
     }
