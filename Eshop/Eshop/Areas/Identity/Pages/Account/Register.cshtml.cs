@@ -101,11 +101,11 @@ namespace Eshop.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     //Check for role
-                    if (!await _roleManager.RoleExistsAsync(StatDetails.Admin))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(StatDetails.Admin));
-                        await _roleManager.CreateAsync(new IdentityRole(StatDetails.Manager));
-                    }
+                    //if (!await _roleManager.RoleExistsAsync(StatDetails.Admin))
+                    //{
+                    //    await _roleManager.CreateAsync(new IdentityRole(StatDetails.Admin));
+                    //    await _roleManager.CreateAsync(new IdentityRole(StatDetails.Manager));
+                    //}
 
                     string role = Request.Form["rdUserRole"].ToString();
                     if(role == StatDetails.Admin)
