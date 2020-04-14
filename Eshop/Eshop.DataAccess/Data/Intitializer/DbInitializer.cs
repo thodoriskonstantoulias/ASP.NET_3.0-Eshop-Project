@@ -37,6 +37,19 @@ namespace Eshop.DataAccess.Data.Intitializer
 
             //Check to see if there are roles already
             if (_context.Roles.Any(r => r.Name == StatDetails.Admin)) return;
+
+            _roleManager.CreateAsync(new IdentityRole(StatDetails.Admin)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(StatDetails.Manager)).GetAwaiter().GetResult();
+
+            _userManager.CreateAsync(new IdentityUser
+            {
+                UserName = "admin@gmail.com",
+                Email = "admin@gmail.com",
+                EmailConfirmed = true
+            }, "Admin123!").GetAwaiter().GetResult();
+
+            IdentityUser user = _context.Users.Where(u => u.Email == "admin@gmail.com").FirstOrDefault();
+            _userManager.AddToRoleAsync(user, StatDetails.Admin).GetAwaiter().GetResult();
         }
     }
 }
